@@ -3,6 +3,8 @@ import React from 'react';
 
 import axios from 'axios';
 
+import { Link } from 'react-router-dom'
+
 interface StockInformation { 
     requestedAt: string;
     results: Array<Stock>;
@@ -61,6 +63,12 @@ const App: React.FC = () => {
             <button type="button" onClick={() => console.log(stocks)}>
                     Get Prices
             </button>
+
+            <Link to='/transactions'>
+                <button type="button" >
+                        Transactions
+                </button>
+            </Link>
             
             {stocks.map((stock: Stock) => {
                 return (
