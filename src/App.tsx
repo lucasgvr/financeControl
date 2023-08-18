@@ -1,6 +1,8 @@
 import './App.css'
 import React from 'react';
 
+import axios from 'axios';
+
 interface StockInformation { 
     requestedAt: string;
     results: Array<Stock>;
@@ -15,48 +17,43 @@ interface Stock {
 }
 
 const App: React.FC = () => {
-    const [stocks, setStocks] = React.useState<any>([])
+    const [stocks, setStocks] = React.useState<Array<Stock>>([])
 
     React.useEffect(() => {
         const names = [
-            'sapr11', 
-            'cmig4',
-            'cxse3',
+            'aesb3', 
             'trpl4', 
             'bbse3',
-            'tims3',
-            'klbn11', 
-            'itsa4', 
             'vivt3',
-            'bbdc3',
-            'egie3',
-            'sanb11', 
+            'itsa4', 
             'taee11', 
-            'aesb3', 
-            'tasa4'
+            'sanb11', 
+            'tims3',
+            'tasa4',
+            'klbn11', 
+            'sapr11', 
+            'egie3',
+            'bbdc3',
+            'cmig4',
+            'cxse3'
         ]
 
         names.map(async (name) => {
-            const res = await handleStockInfo(name)
+            const stocksInformation = await getStockInformation(name)
 
-            if(res.logourl == null) {
-                const newSymbol = res.symbol.substring(0, res.symbol.length - 2) + '4'
-                const newStock = await handleStockInfo(newSymbol)
-                Object.assign(res, {logourl: newStock.logourl})
+            if(stocksInformation.logourl == null) {
+                const newSymbol = stocksInformation.symbol.substring(0, stocksInformation.symbol.length - 2) + '4'
+                const newStock = await getStockInformation(newSymbol)
+                Object.assign(stocksInformation, {logourl: newStock.logourl})
             }
             
-            setStocks((prev: any) => [...prev, res])
+            setStocks((previousInformation: Array<Stock>) => [...previousInformation, stocksInformation])
         })
     }, []);
 
-    const getStocksInfo = async (ticker: string): Promise<StockInformation> => {
-        return await fetch(`https://brapi.dev/api/quote/${ticker}`)
-            .then(response => response.json())
-    }
-
-    const handleStockInfo = async (ticker: string) => {
-        const info = await getStocksInfo(ticker)
-        return info.results[0]
+    const getStockInformation = async (ticker: string) => {
+        const { data } = await axios.get<StockInformation>(`https://brapi.dev/api/quote/${ticker}`)
+        return data.results[0]
     }
 
     return (    
@@ -64,7 +61,7 @@ const App: React.FC = () => {
             <button type="button" onClick={() => console.log(stocks)}>
                     Get Prices
             </button>
-
+            
             {stocks.map((stock: Stock) => {
                 return (
                     <div key={stock.symbol}>
