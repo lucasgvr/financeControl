@@ -4,6 +4,7 @@ import App from './App.tsx'
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 
 import Transaction from './components/Transactions/Transactions.tsx'
+import { TransactionsProvider } from './hooks/useTransactions.tsx'
 
 const router = createBrowserRouter([
     {
@@ -21,5 +22,7 @@ const router = createBrowserRouter([
 ])
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
-    <RouterProvider router={router} />
+    <TransactionsProvider>
+        <RouterProvider router={router} />
+    </TransactionsProvider>
 )
