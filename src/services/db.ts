@@ -1,17 +1,13 @@
 import faunadb from 'faunadb';
 
-interface Transactions {
-    data: Array<Transaction>
-}
-
 interface Transaction {
-    ref: {
+    ref?: {
         value: {
             id: number,
             collection: Object
         }
     },
-    ts: number,
+    ts?: number,
     data: {
         date: string,
         buy: string,
@@ -21,8 +17,12 @@ interface Transaction {
     }
 }
 
+interface Transactions {
+    data: Array<Transaction>
+}
+
 const client = new faunadb.Client({
-  secret: 'fnAFL0054JACWPcLqm1iPXMawGZOuEzVISjIgyAE'
+  secret: import.meta.env.VITE_FAUNA_SECRET
 });
 
 const getTransactions = async () => {
@@ -36,5 +36,13 @@ const getTransactions = async () => {
     return allTransactions.data
 }
 
+const createTransaction = async (data: Transaction) => {
+    return await client.query(q.Create(q.Collection('Transactions'), data))
+}
+
+const deleteTransaction = async (ref: number | undefined) => {
+    return await client.query(q.Delete(q.Ref(q.Collection("Transactions"), ref)))
+}
+
 const q = faunadb.query;
-export { client, q, getTransactions };
+export { client, q, getTransactions, createTransaction, deleteTransaction };

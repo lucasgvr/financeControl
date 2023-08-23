@@ -1,16 +1,16 @@
 import React, { FormEvent } from 'react';
 
 import { Link } from 'react-router-dom'
-import { getTransactions } from '../../services/db';
+import { createTransaction, deleteTransaction, getTransactions } from '../../services/db';
 
 interface Transaction {
-    ref: {
+    ref?: {
         value: {
             id: number,
             collection: Object
         }
     },
-    ts: number,
+    ts?: number,
     data: {
         date: string,
         buy: string,
@@ -29,39 +29,28 @@ const Transactions: React.FC =  () => {
     const [quantity, setQuantity] = React.useState(0)
     const [price, setPrice] = React.useState(0)
 
+    const fetchTransactions = async () => {
+        setTransactions(await getTransactions())
+    }
+
     React.useEffect(() => {
-        // setTransactions([
-        //     {
-        //         id: 1,
-        //         date: '09/08/23',
-        //         buy: 'buy',
-        //         ticker: 'aesb3',
-        //         quantity: 6,
-        //         price: 11.02
-        //     },
-        //     {
-        //         id: 2,
-        //         date: '09/08/23',
-        //         buy: 'buy',
-        //         ticker: 'bbse3',
-        //         quantity: 2,
-        //         price: 32.06
-        //     },
-        //     {
-        //         id: 3,
-        //         date: '09/08/23',
-        //         buy: 'buy',
-        //         ticker: 'bbdc3',
-        //         quantity: 5,
-        //         price: 13.67
-        //     }
-        // ])
+        fetchTransactions()
     }, []);
 
-    const handleAddTransaction = (event: FormEvent) => {
+    const handleAddTransaction = async (event: FormEvent) => {
         event.preventDefault()
 
-        // setTransactions((previousInformation: Array<Transaction>) => [...previousInformation, {id: transactions.length + 1, date, buy, ticker, quantity, price}])
+        const data = {
+            date: date,
+            buy: buy,
+            ticker: ticker,
+            quantity: quantity,
+            price: price
+        }
+
+        await createTransaction({ data })
+
+        fetchTransactions()
 
         setDate('')
         setBuy('')
@@ -70,10 +59,9 @@ const Transactions: React.FC =  () => {
         setPrice(0)
     }
 
-    const teste = async () => {
-        const livro = await getTransactions()
-        
-       setTransactions(livro)
+    const handleDeleteTransaction = async (ref: number | undefined) => {
+        await deleteTransaction(ref)
+        fetchTransactions()
     }
 
     return (
@@ -84,19 +72,19 @@ const Transactions: React.FC =  () => {
                 </button>
             </Link>
 
-            <button onClick={() => teste()}>
+            <button>
                 console                            
             </button>
 
             {transactions.map((transaction) => {
                 return (
-                    <div key={transaction.ref.value.id}>
+                    <div key={transaction.ref?.value.id}>
                         <p>{transaction.data.date}</p>
                         {transaction.data.buy ? <p>Compra</p> : <p>Venda</p>}
                         <p>{transaction.data.ticker}</p>
                         <p>{transaction.data.quantity}</p>
                         <p>{transaction.data.price}</p>
-                        <button>
+                        <button onClick={() => handleDeleteTransaction(transaction.ref?.value.id)}>
                             Remove
                         </button>
                         <button>
