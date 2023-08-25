@@ -14,7 +14,8 @@ interface Transaction {
         buy: string,
         ticker: string,
         quantity: number,
-        price: number
+        price: number,
+        totalPrice: number
     }
 }
 
@@ -28,7 +29,8 @@ interface TransactionInput {
         buy: string,
         ticker: string,
         quantity: number,
-        price: number
+        price: number,
+        totalPrice: number
     }
 }
 
@@ -62,8 +64,10 @@ export const TransactionsProvider = ({children}: TransactionProviderProps) => {
                 q.Lambda("X", q.Get(q.Var("X")))
             )
         )
-    
-        return allTransactions.data
+
+        
+                
+        return allTransactions.data.sort((a,b)=> (a.data.date < b.data.date ? -1 : 1))
     }
 
     const updateAllTransactions = async () => {

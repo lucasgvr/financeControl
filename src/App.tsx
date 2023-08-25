@@ -43,11 +43,11 @@ const App: React.FC = () => {
         names.map(async (name) => {
             const stocksInformation = await getStockInformation(name)
 
-            if(stocksInformation.logourl == null) {
-                const newSymbol = stocksInformation.symbol.substring(0, stocksInformation.symbol.length - 2) + '4'
-                const newStock = await getStockInformation(newSymbol)
-                Object.assign(stocksInformation, {logourl: newStock.logourl})
-            }
+            // if(stocksInformation.logourl == null) {
+            //     const newSymbol = stocksInformation.symbol.substring(0, stocksInformation.symbol.length - 2) + '4'
+            //     const newStock = await getStockInformation(newSymbol)
+            //     Object.assign(stocksInformation, {logourl: newStock.logourl})
+            // }
             
             setStocks((previousInformation: Array<Stock>) => [...previousInformation, stocksInformation])
         })
