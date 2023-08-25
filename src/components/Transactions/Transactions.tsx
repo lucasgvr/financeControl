@@ -18,10 +18,10 @@ const Transactions: React.FC =  () => {
     const [quantity, setQuantity] = React.useState(0)
     const [price, setPrice] = React.useState(0)
 
-    const [editModalIsOpen, settEditModalIsOpen] = React.useState(false)
+    const [editModalIsOpen, setEditModalIsOpen] = React.useState(false)
 
     const [modalRef, setModalRef] = React.useState(0)
-    const [modalDate, setModalDate] = React.useState('  ')
+    const [modalDate, setModalDate] = React.useState(new Date())
     const [modalBuy, setModalBuy] = React.useState('')
     const [modalTicker, setModalTicker] = React.useState('')
     const [modalQuantity, setModalQuantity] = React.useState(0)
@@ -54,7 +54,7 @@ const Transactions: React.FC =  () => {
         event.preventDefault()
 
         await updateTransaction(modalRef, {data: {
-            date: modalDate,
+            date: modalDate.toLocaleDateString('br'),
             buy: modalBuy,
             ticker: modalTicker,
             quantity: modalQuantity,
@@ -66,20 +66,27 @@ const Transactions: React.FC =  () => {
     }
 
     const handleOpenModal = async (ref: number) => {
-        const modalData = await getTransactionByRef(ref)  
+        const modalData = await getTransactionByRef(ref) 
+        
+        const dateParts = modalData.data.date.split("/")
+        const day = parseInt(dateParts[0], 10)
+        const month = parseInt(dateParts[1], 10) - 1
+        const year = parseInt(dateParts[2], 10)
 
+        const dateObject = new Date(year, month, day);
+        
         setModalRef(ref)
-        setModalDate(modalData.data.date)
+        setModalDate(dateObject)
         setModalBuy(modalData.data.buy)
         setModalTicker(modalData.data.ticker)
         setModalQuantity(modalData.data.quantity)
         setModalPrice(modalData.data.price)
         
-        settEditModalIsOpen(true)
+        setEditModalIsOpen(true)
     }
 
     const handleCloseModal = () => {
-        settEditModalIsOpen(false)
+        setEditModalIsOpen(false)
     }
 
     Modal.setAppElement('#root')
@@ -141,7 +148,13 @@ const Transactions: React.FC =  () => {
             >
                 <form onSubmit={handleUpdateTransaction}>
                     <label htmlFor="dateModalInput">Data</label>
-                    <input id="dateModalInput" type="text" placeholder={modalDate} value={modalDate} onChange={event => setModalDate(event.target.value)} />
+
+                    <DatePicker
+                        dateFormat="dd/MM/yyyy"
+                        selected={modalDate}
+                        onChange={(date: Date) => setModalDate(date)}
+                    />
+
                     <label htmlFor="buyModalInput">Compra/Venda</label>
                     <input id="buyModalInput" type="text" value={modalBuy} onChange={event => setModalBuy(event.target.value)} />
                     <label htmlFor="tickerModalInput">Ticker</label>

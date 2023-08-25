@@ -56,6 +56,16 @@ export const TransactionsProvider = ({children}: TransactionProviderProps) => {
     useEffect(() => {
         updateAllTransactions()
     }, [])
+
+    const formatDate = (transaction: Transaction) => {
+        const dateParts = transaction.data.date.split("/")
+        const day = parseInt(dateParts[0], 10)
+        const month = parseInt(dateParts[1], 10) - 1
+        const year = parseInt(dateParts[2], 10)
+
+        const dateObject = new Date(year, month, day)
+        return dateObject
+    }
     
     const getTransactions = async () => {
         const allTransactions: Transactions = await client.query(
@@ -65,9 +75,7 @@ export const TransactionsProvider = ({children}: TransactionProviderProps) => {
             )
         )
 
-        
-                
-        return allTransactions.data.sort((a,b)=> (a.data.date < b.data.date ? -1 : 1))
+        return allTransactions.data.sort((a,b)=> (formatDate(a) < formatDate(b) ? -1 : 1))
     }
 
     const updateAllTransactions = async () => {
