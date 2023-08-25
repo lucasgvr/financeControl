@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import Modal from "react-modal"
 
 const Transactions: React.FC =  () => {
-    const { transactions, createTransaction, deleteTransaction, getTransactionByRef } = useTransactions()
+    const { transactions, createTransaction, deleteTransaction, getTransactionByRef, updateTransaction } = useTransactions()
 
     const [date, setDate] = React.useState('')
     const [buy, setBuy] = React.useState('')
@@ -17,6 +17,7 @@ const Transactions: React.FC =  () => {
 
     const [editModalIsOpen, settEditModalIsOpen] = React.useState(false)
 
+    const [modalRef, setModalRef] = React.useState(0)
     const [modalDate, setModalDate] = React.useState('')
     const [modalBuy, setModalBuy] = React.useState('')
     const [modalTicker, setModalTicker] = React.useState('')
@@ -26,7 +27,7 @@ const Transactions: React.FC =  () => {
     const handleAddTransaction = async (event: FormEvent) => {
         event.preventDefault()
 
-        await createTransaction({data :{
+        await createTransaction({data: {
             date,
             buy,
             ticker,
@@ -44,10 +45,25 @@ const Transactions: React.FC =  () => {
     const handleDeleteTransaction = async (ref: number) => {
         await deleteTransaction(ref)
     }
+    
+    const handleUpdateTransaction = async (event: FormEvent) => {
+        event.preventDefault()
+
+        await updateTransaction(modalRef, {data: {
+            date: modalDate,
+            buy: modalBuy,
+            ticker: modalTicker,
+            quantity: modalQuantity,
+            price: modalPrice
+        }})
+
+        handleCloseModal()
+    }
 
     const handleOpenModal = async (ref: number) => {
         const modalData = await getTransactionByRef(ref)  
 
+        setModalRef(ref)
         setModalDate(modalData.data.date)
         setModalBuy(modalData.data.buy)
         setModalTicker(modalData.data.ticker)
@@ -79,7 +95,7 @@ const Transactions: React.FC =  () => {
                 return (
                     <div key={transaction.ref?.value.id}>
                         <p>{transaction.data.date}</p>
-                        {transaction.data.buy ? <p>Compra</p> : <p>Venda</p>}
+                        {transaction.data.buy == 'Compra' ? <p>Compra</p> : <p>Venda</p>}
                         <p>{transaction.data.ticker}</p>
                         <p>{transaction.data.quantity}</p>
                         <p>{transaction.data.price}</p>
@@ -94,16 +110,16 @@ const Transactions: React.FC =  () => {
             })}
 
             <form onSubmit={handleAddTransaction}>
-                <label htmlFor="">Data</label>
-                <input type="text" value={date} onChange={event => setDate(event.target.value)} />
-                <label htmlFor="">Compra/Venda</label>
-                <input type="text" value={buy} onChange={event => setBuy(event.target.value)} />
-                <label htmlFor="">Ticker</label>
-                <input type="text" value={ticker} onChange={event => setTicker(event.target.value)} />
-                <label htmlFor="">Quantidade</label>
-                <input type="number" value={quantity} onChange={event => setQuantity(Number(event.target.value))} />
-                <label htmlFor="">Preço</label>
-                <input type="number" value={price} onChange={event => setPrice(Number(event.target.value))} />
+                <label htmlFor="dateInput">Data</label>
+                <input id="dateInput" type="text" value={date} onChange={event => setDate(event.target.value)} />
+                <label htmlFor="buyInput">Compra/Venda</label>
+                <input id="buyInput" type="text" value={buy} onChange={event => setBuy(event.target.value)} />
+                <label htmlFor="tickerInput">Ticker</label>
+                <input id="tickerInput" type="text" value={ticker} onChange={event => setTicker(event.target.value)} />
+                <label htmlFor="quantityInput">Quantidade</label>
+                <input id="quantityInput" type="number" value={quantity} onChange={event => setQuantity(Number(event.target.value))} />
+                <label htmlFor="priceInput">Preço</label>
+                <input id="priceInput" type="number" value={price} onChange={event => setPrice(Number(event.target.value))} />
                 <button type='submit'>Adicionar</button>
             </form>
 
@@ -111,17 +127,17 @@ const Transactions: React.FC =  () => {
                 isOpen={editModalIsOpen}
                 onRequestClose={handleCloseModal}
             >
-                <form onSubmit={handleAddTransaction}>
-                    <label htmlFor="">Data</label>
-                    <input type="text" value={modalDate} onChange={event => setDate(event.target.value)} />
-                    <label htmlFor="">Compra/Venda</label>
-                    <input type="text" value={modalBuy} onChange={event => setBuy(event.target.value)} />
-                    <label htmlFor="">Ticker</label>
-                    <input type="text" value={modalTicker} onChange={event => setTicker(event.target.value)} />
-                    <label htmlFor="">Quantidade</label>
-                    <input type="number" value={modalQuantity} onChange={event => setQuantity(Number(event.target.value))} />
-                    <label htmlFor="">Preço</label>
-                    <input type="number" value={modalPrice} onChange={event => setPrice(Number(event.target.value))} />
+                <form onSubmit={handleUpdateTransaction}>
+                    <label htmlFor="dateModalInput">Data</label>
+                    <input id="dateModalInput" type="text" value={modalDate} onChange={event => setModalDate(event.target.value)} />
+                    <label htmlFor="buyModalInput">Compra/Venda</label>
+                    <input id="buyModalInput" type="text" value={modalBuy} onChange={event => setModalBuy(event.target.value)} />
+                    <label htmlFor="tickerModalInput">Ticker</label>
+                    <input id="tickerModalInput" type="text" value={modalTicker} onChange={event => setModalTicker(event.target.value)} />
+                    <label htmlFor="quantityModalInput">Quantidade</label>
+                    <input id="quantityModalInput" type="number" value={modalQuantity} onChange={event => setModalQuantity(Number(event.target.value))} />
+                    <label htmlFor="priceModalInput">Preço</label>
+                    <input id="priceModalInput" type="number" value={modalPrice} onChange={event => setModalPrice(Number(event.target.value))} />
                     <button type='submit'>Adicionar</button>
                 </form>
             </Modal>
