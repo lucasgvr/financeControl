@@ -4,12 +4,15 @@ import { useTransactions } from '../../hooks/useTransactions';
 
 import { Link } from 'react-router-dom'
 
+import DatePicker from 'react-datepicker'
+import "react-datepicker/dist/react-datepicker.css"
+
 import Modal from "react-modal"
 
 const Transactions: React.FC =  () => {
     const { transactions, createTransaction, deleteTransaction, getTransactionByRef, updateTransaction } = useTransactions()
 
-    const [date, setDate] = React.useState('')
+    const [date, setDate] = React.useState(new Date())
     const [buy, setBuy] = React.useState('')
     const [ticker, setTicker] = React.useState('')
     const [quantity, setQuantity] = React.useState(0)
@@ -18,7 +21,7 @@ const Transactions: React.FC =  () => {
     const [editModalIsOpen, settEditModalIsOpen] = React.useState(false)
 
     const [modalRef, setModalRef] = React.useState(0)
-    const [modalDate, setModalDate] = React.useState('')
+    const [modalDate, setModalDate] = React.useState('  ')
     const [modalBuy, setModalBuy] = React.useState('')
     const [modalTicker, setModalTicker] = React.useState('')
     const [modalQuantity, setModalQuantity] = React.useState(0)
@@ -28,7 +31,7 @@ const Transactions: React.FC =  () => {
         event.preventDefault()
 
         await createTransaction({data: {
-            date: handleChangeDateFormat(date),
+            date: date.toLocaleDateString('br'),
             buy,
             ticker,
             quantity,
@@ -36,7 +39,7 @@ const Transactions: React.FC =  () => {
             totalPrice: quantity * price
         }})
 
-        setDate('')
+        setDate(new Date())
         setBuy('')
         setTicker('')
         setQuantity(0)
@@ -51,7 +54,7 @@ const Transactions: React.FC =  () => {
         event.preventDefault()
 
         await updateTransaction(modalRef, {data: {
-            date: handleChangeDateFormat(modalDate),
+            date: modalDate,
             buy: modalBuy,
             ticker: modalTicker,
             quantity: modalQuantity,
@@ -60,16 +63,6 @@ const Transactions: React.FC =  () => {
         }})
 
         handleCloseModal()
-    }
-
-    const handleChangeDateFormat = (date: string) => {
-        const year = date.slice(0,4)
-        const month = date.slice(5,7)
-        const day = date.slice(8,10)
-
-        const formattedDate = year.includes('-') ? date :`${day}-${month}-${year}`
-
-        return formattedDate    
     }
 
     const handleOpenModal = async (ref: number) => {
@@ -124,7 +117,13 @@ const Transactions: React.FC =  () => {
 
             <form onSubmit={handleAddTransaction}>
                 <label htmlFor="dateInput">Data</label>
-                <input id="dateInput" type="date" value={date} onChange={event => setDate(event.target.value)} />
+
+                <DatePicker
+                    dateFormat="dd/MM/yyyy"
+                    selected={date}
+                    onChange={(date: Date) => setDate(date)}
+                />
+
                 <label htmlFor="buyInput">Compra/Venda</label>
                 <input id="buyInput" type="text" value={buy} onChange={event => setBuy(event.target.value)} />
                 <label htmlFor="tickerInput">Ticker</label>
@@ -142,7 +141,7 @@ const Transactions: React.FC =  () => {
             >
                 <form onSubmit={handleUpdateTransaction}>
                     <label htmlFor="dateModalInput">Data</label>
-                    <input id="dateModalInput" type="date" placeholder={modalDate} value={modalDate} onChange={event => setModalDate(event.target.value)} />
+                    <input id="dateModalInput" type="text" placeholder={modalDate} value={modalDate} onChange={event => setModalDate(event.target.value)} />
                     <label htmlFor="buyModalInput">Compra/Venda</label>
                     <input id="buyModalInput" type="text" value={modalBuy} onChange={event => setModalBuy(event.target.value)} />
                     <label htmlFor="tickerModalInput">Ticker</label>
