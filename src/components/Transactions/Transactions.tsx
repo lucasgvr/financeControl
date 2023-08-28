@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react';
 
-import { useTransactions } from '../../hooks/useTransactions';
+import { useTransactions } from 'hooks/useTransactions';
 
 import { Link } from 'react-router-dom'
 
@@ -8,8 +8,8 @@ import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
 
 import Modal from "react-modal"
-import CreateTransactionModal from '../Modal/CreateTransaction/CreateTransactionModal';
-import DeleteConfirmModal from '../Modal/DeleteConfirm/DeleteConfirmModal';
+import CreateTransactionModal from 'components/Modal/CreateTransaction/CreateTransactionModal';
+import DeleteConfirmModal from 'components/Modal/DeleteConfirm/DeleteConfirmModal';
 
 const Transactions: React.FC =  () => {
     const { transactions, getTransactionByRef, updateTransaction } = useTransactions()
