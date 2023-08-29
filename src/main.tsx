@@ -7,18 +7,27 @@ import { TransactionsProvider } from './hooks/useTransactions.tsx'
 
 import Transactions from './components/Transactions/Transactions.tsx'
 
+import 'styles/global.scss'
+import Root from 'components/Root/Root.tsx'
+
 const router = createBrowserRouter([
     {
         path: '/',
-        element: <Navigate to='/dashboard' />
-    },
-    {
-        path: '/dashboard',
-        element: <App />
-    },
-    {
-        path: '/transactions',
-        element: <Transactions />
+        element: <Root />,
+        children: [
+            {
+                path: '',
+                element: <Navigate to='/dashboard' />
+            },
+            {
+                path: 'dashboard',
+                element: <App />
+            },
+            {
+                path: 'transactions',
+                element: <Transactions />
+            }
+        ]
     }
 ])
 

@@ -1,0 +1,60 @@
+#header {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    height: 5rem;
+
+    .wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: left;
+
+            img {
+                height: 3rem;
+                width: 3rem;
+                margin-right: 1rem;
+            }
+
+            h1 {
+                color: var(--black);
+
+                span {
+                    color: var(--green-palette-1)
+                }
+            }
+        }
+
+        .links {
+            display: flex;
+            justify-content: space-between;
+
+            a {
+                color: var(--green-palette-1);
+                margin-left: 2rem;
+                text-decoration: none;
+                transition: filter 0.2s;
+
+                &:hover {
+                    filter: brightness(0.8);
+                }
+            }
+        }
+    }
+
+    .profile {
+        display: flex;
+        align-items: center;
+
+        img {
+            height: 3rem;
+            width: 3rem;
+            border-radius: 50%;
+        }
+    }
+}
