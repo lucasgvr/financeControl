@@ -7,8 +7,6 @@ import "react-datepicker/dist/react-datepicker.css"
 
 import './Transactions.scss'
 
-
-
 import Modal from "react-modal"
 import CreateTransactionModal from 'components/Modal/CreateTransaction/CreateTransactionModal';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm/DeleteConfirmModal';
@@ -36,7 +34,7 @@ const Transactions: React.FC =  () => {
         await updateTransaction(modalRef, {data: {
             date: modalDate.toLocaleDateString('br'),
             buy: modalBuy,
-            ticker: modalTicker,
+            ticker: modalTicker.toUpperCase(),
             quantity: modalQuantity,
             price: modalPrice,
             totalPrice: modalQuantity * modalPrice
