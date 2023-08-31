@@ -1,0 +1,35 @@
+.transaction {
+    width: 80%;
+    margin: 0 auto;
+    display: flex;
+    background-color: var(--green-palette-4);
+    border-radius: 0.5rem;
+    justify-content: space-between;
+    padding: 1rem 2rem;
+    margin-bottom: 0.1rem;
+    align-items: center;
+
+    .feature {
+        p {
+            color: var(--green-palette-1);
+
+            &:first-child {
+                color: var(--green-palette-2);
+            }
+        }
+    }
+
+    .buttons {
+        display: flex;
+        gap: 2rem;
+
+        img {
+            transition: filter 0.2s;
+            cursor: pointer;
+            
+            &:hover {
+                filter: brightness(0.8);
+            }
+        }
+    }
+}

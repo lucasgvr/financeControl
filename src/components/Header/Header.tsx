@@ -1,5 +1,6 @@
-import logoImg from 'assets/logo2.svg'
+import logoImg from 'assets/logo.svg'
 import profileImg from 'assets/profile.jpeg'
+import arrowDownIcon from 'assets/arrow-down.svg'
 
 import { NavLink } from 'react-router-dom'
 
@@ -19,7 +20,8 @@ const Header: React.FC = () => {
                     </div>
                 </div>
                 <div className='profile'>
-                    <img src={profileImg} alt="Profile Image" />
+                    <img src={profileImg} alt="Profile Image" className='profilePicture'/>
+                    <img src={arrowDownIcon} alt="Arrow Down Icon" className='icon' />
                 </div>
         </div>
     )

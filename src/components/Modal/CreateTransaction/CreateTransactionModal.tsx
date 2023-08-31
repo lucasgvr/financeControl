@@ -27,7 +27,7 @@ const CreateTransactionModal: React.FC<CreateTransactionModalProps> = ({isOpen, 
         await createTransaction({data: {
             date: date.toLocaleDateString('br'),
             buy,
-            ticker,
+            ticker: ticker.toUpperCase(),
             quantity,
             price,
             totalPrice: quantity * price

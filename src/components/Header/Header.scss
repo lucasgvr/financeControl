@@ -1,7 +1,11 @@
 #header {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-between;
+    width: 80%;
+    margin: 0 auto;
+
+    margin-bottom: 4rem;
 
     height: 5rem;
 
@@ -23,6 +27,7 @@
 
             h1 {
                 color: var(--black);
+                font-weight: 500;
 
                 span {
                     color: var(--green-palette-1)
@@ -50,11 +55,21 @@
     .profile {
         display: flex;
         align-items: center;
+        gap: 1rem;
 
-        img {
+        .profilePicture {
             height: 3rem;
             width: 3rem;
             border-radius: 50%;
+        }
+        
+        .icon {
+            cursor: pointer;
+            transition: filter 0.2s;
+
+            &:hover {
+                filter: brightness(0.8);
+            }
         }
     }
 }

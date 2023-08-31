@@ -2,14 +2,17 @@ import React, { FormEvent } from 'react';
 
 import { useTransactions } from 'hooks/useTransactions';
 
-import { Link } from 'react-router-dom'
-
 import DatePicker from 'react-datepicker'
 import "react-datepicker/dist/react-datepicker.css"
+
+import './Transactions.scss'
+
+
 
 import Modal from "react-modal"
 import CreateTransactionModal from 'components/Modal/CreateTransaction/CreateTransactionModal';
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm/DeleteConfirmModal';
+import Transaction from './Transaction/Transaction';
 
 const Transactions: React.FC =  () => {
     const { transactions, getTransactionByRef, updateTransaction } = useTransactions()
@@ -85,32 +88,16 @@ const Transactions: React.FC =  () => {
 
     return (
         <>
-            <Link to='/dashboard'>
-                <button type="button" >
-                        Dashboard
+            <div className='titleContainer'>
+                <h1>Transações</h1>
+                <button onClick={handleOpenCreateModal}>
+                    Adicionar +                            
                 </button>
-            </Link>
-
-            <button onClick={handleOpenCreateModal}>
-                Create +                            
-            </button>
+            </div>
 
             {transactions.map((transaction) => {
                 return (
-                    <div key={transaction.ref?.value.id}>
-                        <p>{transaction.data.date}</p>
-                        {transaction.data.buy == 'Compra' ? <p>Compra</p> : <p>Venda</p>}
-                        <p>{transaction.data.ticker}</p>
-                        <p>{transaction.data.quantity}</p>
-                        <p>{transaction.data.price}</p>
-                        <p>{transaction.data.totalPrice}</p>
-                        <button onClick={() => handleOpenDeleteModal(transaction.ref.value.id)}>
-                            Remove
-                        </button>
-                        <button onClick={() => handleOpenModal(transaction.ref.value.id)}>
-                            Edit
-                        </button>
-                    </div>
+                    <Transaction transaction={transaction} handleOpenModal={handleOpenModal} handleOpenDeleteModal={handleOpenDeleteModal} />
                 )
             })}
 
