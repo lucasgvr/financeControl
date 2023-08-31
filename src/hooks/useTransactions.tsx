@@ -1,7 +1,8 @@
 import { ReactNode, createContext, useContext, useEffect, useState } from "react"
-import { client, q } from "../services/db"
 
-interface Transaction {
+import { client, q } from "services/db"
+
+export interface Transaction {
     ref: {
         value: {
             id: number,

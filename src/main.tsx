@@ -1,15 +1,14 @@
 import ReactDOM from 'react-dom/client'
-import App from './App.tsx'
 
 import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 
-import { TransactionsProvider } from './hooks/useTransactions.tsx'
-
-import Transactions from './components/Transactions/Transactions.tsx'
-
-import 'styles/global.scss'
+import { TransactionsProvider } from 'hooks/useTransactions.tsx'
 
 import Root from 'components/Root/Root.tsx'
+import App from 'App.tsx'
+import Transactions from 'components/Transactions/Transactions.tsx'
+
+import 'styles/global.scss'
 
 const router = createBrowserRouter([
     {

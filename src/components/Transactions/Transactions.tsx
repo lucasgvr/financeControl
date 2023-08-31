@@ -1,16 +1,17 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent } from 'react'
 
-import { useTransactions } from 'hooks/useTransactions';
+import Modal from 'react-modal'
 
 import DatePicker from 'react-datepicker'
+
+import { useTransactions } from 'hooks/useTransactions'
+
+import CreateTransactionModal from 'components/Modal/CreateTransaction/CreateTransactionModal'
+import DeleteConfirmModal from 'components/Modal/DeleteConfirm/DeleteConfirmModal'
+import Transaction from 'components/Transactions/Transaction/Transaction'
+
 import "react-datepicker/dist/react-datepicker.css"
-
 import './Transactions.scss'
-
-import Modal from "react-modal"
-import CreateTransactionModal from 'components/Modal/CreateTransaction/CreateTransactionModal';
-import DeleteConfirmModal from 'components/Modal/DeleteConfirm/DeleteConfirmModal';
-import Transaction from './Transaction/Transaction';
 
 const Transactions: React.FC =  () => {
     const { transactions, getTransactionByRef, updateTransaction } = useTransactions()
@@ -95,7 +96,12 @@ const Transactions: React.FC =  () => {
 
             {transactions.map((transaction) => {
                 return (
-                    <Transaction transaction={transaction} handleOpenModal={handleOpenModal} handleOpenDeleteModal={handleOpenDeleteModal} />
+                    <Transaction 
+                        key={transaction.ref?.value.id}
+                        transaction={transaction}
+                        handleOpenModal={handleOpenModal}
+                        handleOpenDeleteModal={handleOpenDeleteModal}
+                    />
                 )
             })}
 

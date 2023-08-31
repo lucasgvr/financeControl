@@ -1,11 +1,12 @@
-import React, { FormEvent } from 'react';
+import React, { FormEvent } from 'react'
 
-import { useTransactions } from '../../../hooks/useTransactions';
-
-import Modal from "react-modal"
+import Modal from 'react-modal'
 
 import DatePicker from 'react-datepicker'
-import "react-datepicker/dist/react-datepicker.css"
+
+import { useTransactions } from 'hooks/useTransactions'
+
+import 'react-datepicker/dist/react-datepicker.css'
 
 interface CreateTransactionModalProps {
     isOpen: boolean,

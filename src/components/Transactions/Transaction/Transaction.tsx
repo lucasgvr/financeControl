@@ -1,17 +1,19 @@
+import { Transaction as TransactionType} from 'hooks/useTransactions' 
+
 import './Transaction.scss'
 
-import deleteImg from 'assets/trash.svg'
+import trashImg from 'assets/trash.svg'
 import editImg from 'assets/edit.svg'
 
 interface TransactionProps {
-    transaction: any,
+    transaction: TransactionType,
     handleOpenModal: (ref: number) => void,
     handleOpenDeleteModal: (ref: number) => void
 }
 
 const Transaction: React.FC<TransactionProps> = ({ transaction, handleOpenModal, handleOpenDeleteModal }: TransactionProps) => {
     return (        
-        <div key={transaction.ref?.value.id} className='transaction'>
+        <div className='transaction'>
             <div className='feature'>
                 <p>Data</p>
                 <p>{transaction.data.date}</p>
@@ -39,7 +41,7 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, handleOpenModal,
             
             <div className='buttons'>
                 <img src={editImg} onClick={() => handleOpenModal(transaction.ref.value.id)} />
-                <img src={deleteImg} onClick={() => handleOpenDeleteModal(transaction.ref.value.id)} />
+                <img src={trashImg} onClick={() => handleOpenDeleteModal(transaction.ref.value.id)} />
             </div>
         </div>
     )   

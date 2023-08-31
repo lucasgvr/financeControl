@@ -1,15 +1,13 @@
-import React from 'react';
+import React from 'react'
 
-import { useTransactions } from '../../../hooks/useTransactions';
+import Modal from 'react-modal'
 
-import Modal from "react-modal"
-
-import trashImg from 'assets/trash.svg'
-import closeImg from 'assets/close.svg'
+import { useTransactions } from 'hooks/useTransactions'
 
 import './DeleteConfirmModal.scss'
 
-import "react-datepicker/dist/react-datepicker.css"
+import trashImg from 'assets/trash.svg'
+import closeImg from 'assets/close.svg'
 
 interface CreateTransactionModalProps {
     isOpen: boolean,
