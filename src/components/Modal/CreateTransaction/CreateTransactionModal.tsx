@@ -6,7 +6,13 @@ import DatePicker from 'react-datepicker'
 
 import { useTransactions } from 'hooks/useTransactions'
 
+import closeImg from 'assets/close.svg'
+
+import { RadioBox, TransactionTypeContainer } from 'styles/radioBox'
+
 import 'react-datepicker/dist/react-datepicker.css'
+
+import './CreateTransactionModal.scss'
 
 interface CreateTransactionModalProps {
     isOpen: boolean,
@@ -16,31 +22,32 @@ interface CreateTransactionModalProps {
 const CreateTransactionModal: React.FC<CreateTransactionModalProps> = ({isOpen, onRequestClose}: CreateTransactionModalProps) => {
     const { createTransaction } = useTransactions()
 
+    const [type, setType] = React.useState('Compra')
+
     const [date, setDate] = React.useState(new Date())
-    const [buy, setBuy] = React.useState('')
     const [ticker, setTicker] = React.useState('')
-    const [quantity, setQuantity] = React.useState(0)
-    const [price, setPrice] = React.useState(0)
+    const [quantity, setQuantity] = React.useState('')
+    const [price, setPrice] = React.useState('')
 
     const handleAddTransaction = async (event: FormEvent) => {
         event.preventDefault()
 
         await createTransaction({data: {
             date: date.toLocaleDateString('br'),
-            buy,
+            type,
             ticker: ticker.toUpperCase(),
-            quantity,
-            price,
-            totalPrice: quantity * price
+            quantity: Number(quantity),
+            price: Number(price),
+            totalPrice: Number(quantity) * Number(price)
         }})
 
         onRequestClose()
 
         setDate(new Date())
-        setBuy('')
+        setType('Compra')
         setTicker('')
-        setQuantity(0)
-        setPrice(0)
+        setQuantity('')
+        setPrice('')
     }
 
     Modal.setAppElement('#root')
@@ -49,24 +56,44 @@ const CreateTransactionModal: React.FC<CreateTransactionModalProps> = ({isOpen, 
         <Modal
             isOpen={isOpen}
             onRequestClose={onRequestClose}
+            overlayClassName='react-modal-overlay'
+            className='react-create-modal-content'
         >
-            <form onSubmit={handleAddTransaction}>
-                <label htmlFor="dateInput">Data</label>
+            <img src={closeImg} alt="" className='closeButton' onClick={onRequestClose} />
 
+            <form onSubmit={handleAddTransaction} className='createModalForm'>
                 <DatePicker
                     dateFormat="dd/MM/yyyy"
                     selected={date}
                     onChange={(date: Date) => setDate(date)}
+                    placeholderText='Data'
                 />
 
-                <label htmlFor="buyInput">Compra/Venda</label>
-                <input id="buyInput" type="text" value={buy} onChange={event => setBuy(event.target.value)} />
-                <label htmlFor="tickerInput">Ticker</label>
-                <input id="tickerInput" type="text" value={ticker} onChange={event => setTicker(event.target.value)} />
-                <label htmlFor="quantityInput">Quantidade</label>
-                <input id="quantityInput" type="number" value={quantity} onChange={event => setQuantity(Number(event.target.value))} />
-                <label htmlFor="priceInput">Preço</label>
-                <input id="priceInput" type="number" step="any" value={price} onChange={event => setPrice(Number(event.target.value))} />
+                <TransactionTypeContainer>
+                    <RadioBox
+                        type="button"
+                        onClick={() => { setType('Compra') }}
+                        $isActive={type === 'Compra'}
+                        $activeColor="green"
+                    >
+                        <span>Compra</span>
+                    </RadioBox>
+
+                    <RadioBox
+                        type="button"
+                        onClick={() => { setType('Venda') }}
+                        $isActive={type === 'Venda'}
+                        $activeColor="red"
+                    >
+                        <span>Venda</span>
+                    </RadioBox>
+                </TransactionTypeContainer>
+
+
+                <input id="tickerInput" placeholder='Ticker' value={ticker} onChange={event => setTicker(event.target.value)} />
+                <input id="quantityInput" placeholder='Quantidade' value={quantity} onChange={event => setQuantity(event.target.value)} />
+                <input id="priceInput" placeholder='Preço' step="any" value={price} onChange={event => setPrice(event.target.value)} />
+
                 <button type='submit'>Adicionar</button>
             </form>
         </Modal>

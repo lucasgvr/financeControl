@@ -31,7 +31,7 @@ const DeleteConfirmModal: React.FC<CreateTransactionModalProps> = ({isOpen, onRe
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             overlayClassName='react-modal-overlay'
-            className='react-modal-content'
+            className='react-delete-modal-content'
         >
             <img src={closeImg} alt="" className='closeButton' onClick={onRequestClose} />
 

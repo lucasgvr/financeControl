@@ -12,6 +12,11 @@ interface TransactionProps {
 }
 
 const Transaction: React.FC<TransactionProps> = ({ transaction, handleOpenModal, handleOpenDeleteModal }: TransactionProps) => {
+    const BRL = new Intl.NumberFormat('BRL', {
+        style: 'currency',
+        currency: 'BRL'
+    })
+
     return (        
         <div className='transaction'>
             <div className='feature'>
@@ -20,7 +25,7 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, handleOpenModal,
             </div>
             <div className='feature'>
                 <p>Compra/Venda</p>
-                <p>{transaction.data.buy}</p>
+                <p>{transaction.data.type}</p>
             </div>
             <div className='feature'>
                 <p>Ticker</p>
@@ -32,11 +37,11 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, handleOpenModal,
             </div>
             <div className='feature'>
                 <p>Preço</p>
-                <p>R$ {transaction.data.price}</p>
+                <p>{BRL.format(transaction.data.price)}</p>
             </div>
             <div className='feature'>
                 <p>Preço Total</p>
-                <p>R$ {transaction.data.totalPrice}</p>
+                <p>{BRL.format(transaction.data.totalPrice)}</p>
             </div>
             
             <div className='buttons'>

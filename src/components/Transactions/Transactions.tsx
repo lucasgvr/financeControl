@@ -34,7 +34,7 @@ const Transactions: React.FC =  () => {
 
         await updateTransaction(modalRef, {data: {
             date: modalDate.toLocaleDateString('br'),
-            buy: modalBuy,
+            type: modalBuy,
             ticker: modalTicker.toUpperCase(),
             quantity: modalQuantity,
             price: modalPrice,
@@ -56,7 +56,7 @@ const Transactions: React.FC =  () => {
         
         setModalRef(ref)
         setModalDate(dateObject)
-        setModalBuy(modalData.data.buy)
+        setModalBuy(modalData.data.type)
         setModalTicker(modalData.data.ticker)
         setModalQuantity(modalData.data.quantity)
         setModalPrice(modalData.data.price)

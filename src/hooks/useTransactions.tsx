@@ -12,7 +12,7 @@ export interface Transaction {
     ts: number,
     data: {
         date: string,
-        buy: string,
+        type: string,
         ticker: string,
         quantity: number,
         price: number,
@@ -27,7 +27,7 @@ interface Transactions {
 interface TransactionInput {
     data: {
         date: string,
-        buy: string,
+        type: string,
         ticker: string,
         quantity: number,
         price: number,
