@@ -1,70 +1,30 @@
-import React, { FormEvent } from 'react'
-
-import Modal from 'react-modal'
-
-import DatePicker from 'react-datepicker'
+import React from 'react'
 
 import { useTransactions } from 'hooks/useTransactions'
 
 import CreateTransactionModal from 'components/Modal/CreateTransaction/CreateTransactionModal'
 import DeleteConfirmModal from 'components/Modal/DeleteConfirm/DeleteConfirmModal'
+import EditTransactionModal from 'components/Modal/EditTransaction/EditTransactionModal'
 import Transaction from 'components/Transactions/Transaction/Transaction'
 
 import "react-datepicker/dist/react-datepicker.css"
 import './Transactions.scss'
 
 const Transactions: React.FC =  () => {
-    const { transactions, getTransactionByRef, updateTransaction } = useTransactions()
+    const { transactions } = useTransactions()
+
+    const [transactionRef, setTransactionRef] = React.useState(0)
 
     const [createModalIsOpen, setCreateModalIsOpen] = React.useState(false)
     const [deleteModalIsOpen, setDeleteModalIsOpen] = React.useState(false)
     const [editModalIsOpen, setEditModalIsOpen] = React.useState(false)
 
-    const [transactionRef, setTransactionRef] = React.useState(0)
-
-    const [modalRef, setModalRef] = React.useState(0)
-    const [modalDate, setModalDate] = React.useState(new Date())
-    const [modalBuy, setModalBuy] = React.useState('')
-    const [modalTicker, setModalTicker] = React.useState('')
-    const [modalQuantity, setModalQuantity] = React.useState(0)
-    const [modalPrice, setModalPrice] = React.useState(0)
-
-    const handleUpdateTransaction = async (event: FormEvent) => {
-        event.preventDefault()
-
-        await updateTransaction(modalRef, {data: {
-            date: modalDate.toLocaleDateString('br'),
-            type: modalBuy,
-            ticker: modalTicker.toUpperCase(),
-            quantity: modalQuantity,
-            price: modalPrice,
-            totalPrice: modalQuantity * modalPrice
-        }})
-
-        handleCloseModal()
-    }
-
-    const handleOpenModal = async (ref: number) => {
-        const modalData = await getTransactionByRef(ref) 
-        
-        const dateParts = modalData.data.date.split("/")
-        const day = parseInt(dateParts[0], 10)
-        const month = parseInt(dateParts[1], 10) - 1
-        const year = parseInt(dateParts[2], 10)
-
-        const dateObject = new Date(year, month, day);
-        
-        setModalRef(ref)
-        setModalDate(dateObject)
-        setModalBuy(modalData.data.type)
-        setModalTicker(modalData.data.ticker)
-        setModalQuantity(modalData.data.quantity)
-        setModalPrice(modalData.data.price)
-        
+    const handleOpenEditModal = (ref: number) => {
+        setTransactionRef(ref)
         setEditModalIsOpen(true)
     }
 
-    const handleCloseModal = () => {
+    const handleCloseEditModal = () => {
         setEditModalIsOpen(false)
     }
 
@@ -99,7 +59,7 @@ const Transactions: React.FC =  () => {
                     <Transaction 
                         key={transaction.ref?.value.id}
                         transaction={transaction}
-                        handleOpenModal={handleOpenModal}
+                        handleOpenEditModal={handleOpenEditModal}
                         handleOpenDeleteModal={handleOpenDeleteModal}
                     />
                 )
@@ -116,30 +76,11 @@ const Transactions: React.FC =  () => {
                 transactionRef={transactionRef}
             />
             
-            <Modal
+            <EditTransactionModal 
                 isOpen={editModalIsOpen}
-                onRequestClose={handleCloseModal}
-            >
-                <form onSubmit={handleUpdateTransaction}>
-                    <label htmlFor="dateModalInput">Data</label>
-
-                    <DatePicker
-                        dateFormat="dd/MM/yyyy"
-                        selected={modalDate}
-                        onChange={(date: Date) => setModalDate(date)}
-                    />
-
-                    <label htmlFor="buyModalInput">Compra/Venda</label>
-                    <input id="buyModalInput" type="text" value={modalBuy} onChange={event => setModalBuy(event.target.value)} />
-                    <label htmlFor="tickerModalInput">Ticker</label>
-                    <input id="tickerModalInput" type="text" value={modalTicker} onChange={event => setModalTicker(event.target.value)} />
-                    <label htmlFor="quantityModalInput">Quantidade</label>
-                    <input id="quantityModalInput" type="number" value={modalQuantity} onChange={event => setModalQuantity(Number(event.target.value))} />
-                    <label htmlFor="priceModalInput">Preço</label>
-                    <input id="priceModalInput" type="number" step="any" value={modalPrice} onChange={event => setModalPrice(Number(event.target.value))} />
-                    <button type='submit'>Adicionar</button>
-                </form>
-            </Modal>
+                onRequestClose={handleCloseEditModal}
+                transactionRef={transactionRef}
+            />
         </>
     )
 }

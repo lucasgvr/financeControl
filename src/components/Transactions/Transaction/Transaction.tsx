@@ -7,11 +7,11 @@ import editImg from 'assets/edit.svg'
 
 interface TransactionProps {
     transaction: TransactionType,
-    handleOpenModal: (ref: number) => void,
+    handleOpenEditModal: (ref: number) => void,
     handleOpenDeleteModal: (ref: number) => void
 }
 
-const Transaction: React.FC<TransactionProps> = ({ transaction, handleOpenModal, handleOpenDeleteModal }: TransactionProps) => {
+const Transaction: React.FC<TransactionProps> = ({ transaction, handleOpenEditModal, handleOpenDeleteModal }: TransactionProps) => {
     const BRL = new Intl.NumberFormat('BRL', {
         style: 'currency',
         currency: 'BRL'
@@ -45,7 +45,7 @@ const Transaction: React.FC<TransactionProps> = ({ transaction, handleOpenModal,
             </div>
             
             <div className='buttons'>
-                <img src={editImg} onClick={() => handleOpenModal(transaction.ref.value.id)} />
+                <img src={editImg} onClick={() => handleOpenEditModal(transaction.ref.value.id)} />
                 <img src={trashImg} onClick={() => handleOpenDeleteModal(transaction.ref.value.id)} />
             </div>
         </div>

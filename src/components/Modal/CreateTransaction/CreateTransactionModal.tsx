@@ -12,7 +12,7 @@ import { RadioBox, TransactionTypeContainer } from 'styles/radioBox'
 
 import 'react-datepicker/dist/react-datepicker.css'
 
-import './CreateTransactionModal.scss'
+import 'styles/modal.scss'
 
 interface CreateTransactionModalProps {
     isOpen: boolean,
@@ -57,11 +57,11 @@ const CreateTransactionModal: React.FC<CreateTransactionModalProps> = ({isOpen, 
             isOpen={isOpen}
             onRequestClose={onRequestClose}
             overlayClassName='react-modal-overlay'
-            className='react-create-modal-content'
+            className='react-modal-content'
         >
             <img src={closeImg} alt="" className='closeButton' onClick={onRequestClose} />
 
-            <form onSubmit={handleAddTransaction} className='createModalForm'>
+            <form onSubmit={handleAddTransaction} className='modalForm'>
                 <DatePicker
                     dateFormat="dd/MM/yyyy"
                     selected={date}

@@ -4,7 +4,7 @@ import Modal from 'react-modal'
 
 import { useTransactions } from 'hooks/useTransactions'
 
-import './DeleteConfirmModal.scss'
+import 'styles/modal.scss'
 
 import trashImg from 'assets/trash.svg'
 import closeImg from 'assets/close.svg'

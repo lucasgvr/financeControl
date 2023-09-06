@@ -24,7 +24,7 @@ interface Transactions {
     data: Array<Transaction>
 }
 
-interface TransactionInput {
+export interface TransactionInput {
     data: {
         date: string,
         type: string,
