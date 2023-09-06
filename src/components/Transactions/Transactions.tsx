@@ -80,6 +80,7 @@ const Transactions: React.FC =  () => {
                 isOpen={editModalIsOpen}
                 onRequestClose={handleCloseEditModal}
                 transactionRef={transactionRef}
+                transactions={transactions}
             />
         </>
     )

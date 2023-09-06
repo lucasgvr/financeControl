@@ -1,6 +1,6 @@
 import React, { FormEvent } from 'react'
 
-import { useTransactions } from "hooks/useTransactions"
+import { Transaction, useTransactions } from "hooks/useTransactions"
 
 import Modal from 'react-modal'
 import closeImg from 'assets/close.svg'
@@ -15,11 +15,12 @@ import { RadioBox, TransactionTypeContainer } from 'styles/radioBox'
 interface EditTransactionModalProps {
     isOpen: boolean,
     onRequestClose: () => void,
-    transactionRef: number
+    transactionRef: number,
+    transactions: Array<Transaction>
 }
 
-const EditTransactionModal: React.FC<EditTransactionModalProps> = ({isOpen, onRequestClose, transactionRef}: EditTransactionModalProps) => {
-    const { updateTransaction, getTransactionByRef } = useTransactions()
+const EditTransactionModal: React.FC<EditTransactionModalProps> = ({isOpen, onRequestClose, transactionRef, transactions}: EditTransactionModalProps) => {
+    const { updateTransaction } = useTransactions()
     
     const [modalDate, setModalDate] = React.useState(new Date())
     const [modalType, setModalType] = React.useState('')
@@ -28,9 +29,9 @@ const EditTransactionModal: React.FC<EditTransactionModalProps> = ({isOpen, onRe
     const [modalPrice, setModalPrice] = React.useState('')
 
     const handleGetTransactionInfo = async (ref: number) => {
-        const modalData = await getTransactionByRef(ref) 
+        const transacionFound: Transaction = transactions.find((transaction: Transaction) => transaction.ref.value.id == ref)!
         
-        const dateParts = modalData.data.date.split("/")
+        const dateParts = transacionFound.data.date.split("/")
         const day = parseInt(dateParts[0], 10)
         const month = parseInt(dateParts[1], 10) - 1
         const year = parseInt(dateParts[2], 10)
@@ -38,10 +39,10 @@ const EditTransactionModal: React.FC<EditTransactionModalProps> = ({isOpen, onRe
         const dateObject = new Date(year, month, day)
 
         setModalDate(dateObject)
-        setModalType(modalData.data.type)
-        setModalTicker(modalData.data.ticker)
-        setModalQuantity(String(modalData.data.quantity))
-        setModalPrice(String(modalData.data.price))
+        setModalType(transacionFound.data.type)
+        setModalTicker(transacionFound.data.ticker)
+        setModalQuantity(String(transacionFound.data.quantity))
+        setModalPrice(String(transacionFound.data.price))
     }
 
     const handleUpdateTransaction = async (event: FormEvent) => {

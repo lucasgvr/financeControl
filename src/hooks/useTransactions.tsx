@@ -20,7 +20,7 @@ export interface Transaction {
     }
 }
 
-interface Transactions {
+export interface Transactions {
     data: Array<Transaction>
 }
 
