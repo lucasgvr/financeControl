@@ -1,0 +1,28 @@
+.stocks {
+    width: 80%;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 2rem;
+
+    .stockCard {
+        background-color: var(--green-palette-3);
+        border-radius: 1rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .8rem;
+
+        div {
+            display: flex;
+            gap: 1rem;
+            justify-content: left;
+            align-items: center;
+
+            img {
+                border-radius: 50%;
+            }
+        }
+    }
+}

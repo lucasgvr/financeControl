@@ -5,7 +5,7 @@ import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom'
 import { TransactionsProvider } from 'hooks/useTransactions.tsx'
 
 import Root from 'components/Root/Root.tsx'
-import App from 'App.tsx'
+import Dashboard from 'components/Dashboard/Dashboard'
 import Transactions from 'components/Transactions/Transactions.tsx'
 
 import 'styles/global.scss'
@@ -21,7 +21,7 @@ const router = createBrowserRouter([
             },
             {
                 path: 'dashboard',
-                element: <App />
+                element: <Dashboard />
             },
             {
                 path: 'transactions',

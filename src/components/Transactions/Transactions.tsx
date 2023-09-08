@@ -57,7 +57,7 @@ const Transactions: React.FC =  () => {
             {transactions.map((transaction) => {
                 return (
                     <Transaction 
-                        key={transaction.ref?.value.id}
+                        key={transaction.ref.value.id}
                         transaction={transaction}
                         handleOpenEditModal={handleOpenEditModal}
                         handleOpenDeleteModal={handleOpenDeleteModal}

@@ -92,7 +92,7 @@ const CreateTransactionModal: React.FC<CreateTransactionModalProps> = ({isOpen, 
 
                 <input id="tickerInput" placeholder='Ticker' value={ticker} onChange={event => setTicker(event.target.value)} />
                 <input id="quantityInput" placeholder='Quantidade' value={quantity} onChange={event => setQuantity(event.target.value)} />
-                <input id="priceInput" placeholder='Preço' step="any" value={price} onChange={event => setPrice(event.target.value)} />
+                <input id="priceInput" placeholder='Preço' step="any" value={price} onChange={event => setPrice(event.target.value.replace(",", "."))} />
 
                 <button type='submit'>Adicionar</button>
             </form>
