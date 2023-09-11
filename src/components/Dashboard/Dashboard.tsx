@@ -23,36 +23,41 @@ const Dashboard: React.FC = () => {
 
     const [stocks, setStocks] = React.useState<Array<Stock>>([])
 
-    const getTeste = async () => {
+    const calculateAveragePrice = async () => {
         const tickers = transactions.map(transaction => transaction.data.ticker)
-        const teste = [...new Set(tickers)]
+        const filteredTickers = [...new Set(tickers)]
 
-        console.log(teste)
-        teste.map(async (name) => {
-            const stocksInformation = await getStockInformation(name)
+        filteredTickers.map(async (ticker) => {
+            const stocksInformation = await getStockInformation(ticker)
 
             setStocks((previousInformation: Array<Stock>) => [...previousInformation, stocksInformation])
+
+            const foundTransactions = transactions.filter(transaction => {
+                return transaction.data.ticker === ticker
+            })
+
+            let quantity = 0
+            let totalPrice = 0
+
+            foundTransactions.map(transac => {
+                quantity += transac.data.quantity
+                totalPrice += transac.data.totalPrice
+            })
+
+            const avPrice = totalPrice/quantity
+
+            console.log(ticker, avPrice)
+
+            // const tt = stocks.filter(stock => {
+            //     if(stock. === ticker) {
+
+            //     }
+            // })
         })
-
-        const result = transactions.filter(obj => {
-            return obj.data.ticker === 'ITSA4'
-        })
-
-        let sumQuantity = 0;
-        let sumTotalPrice = 0;
-
-        result.map(obj => {
-            sumQuantity += obj.data.quantity;
-            sumTotalPrice += obj.data.totalPrice;
-        })
-
-        const avPrice = sumTotalPrice/sumQuantity
-
-        console.log(avPrice)
     }
 
     React.useEffect(() => {
-        getTeste()
+        calculateAveragePrice()
     }, [transactions])
 
     const getStockInformation = async (ticker: string) => {
@@ -70,8 +75,8 @@ const Dashboard: React.FC = () => {
                             <p>{stock.longName}</p>
                         </div>
                         <p>{stock.symbol}</p>
-                        <p>{stock.regularMarketPrice}</p>
-                        <p>PM</p>
+                        <p>Preço Atual{stock.regularMarketPrice}</p>
+                        <p>Preço Médio</p>
                         <p>+1,23%</p>
                     </div>
                 );
