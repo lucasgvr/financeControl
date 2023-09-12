@@ -1,0 +1,4 @@
+Arrumar o código do Dashboard
+Criar nova fucnionalidade quando clicar no card da ação (mostrar detalhes como gráficos e dividendos)
+Melhorar o design dos cards 
+Melhorar o design e cores em geral

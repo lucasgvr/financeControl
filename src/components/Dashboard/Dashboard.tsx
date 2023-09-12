@@ -12,6 +12,7 @@ interface StockInformation {
 }
 
 interface Stock {
+    averagePrice: number;
     logourl: string;
     longName: string;
     regularMarketPrice: number;
@@ -27,33 +28,36 @@ const Dashboard: React.FC = () => {
         const tickers = transactions.map(transaction => transaction.data.ticker)
         const filteredTickers = [...new Set(tickers)]
 
-        filteredTickers.map(async (ticker) => {
-            const stocksInformation = await getStockInformation(ticker)
+        const updatedStocks = await Promise.all(
+            filteredTickers.map(async (ticker) => {
+              const stocksInformation = await getStockInformation(ticker);
+              const filteredTransactions = transactions.filter(
+                (transaction) => transaction.data.ticker === ticker
+              );
 
-            setStocks((previousInformation: Array<Stock>) => [...previousInformation, stocksInformation])
+              const totalPrice = filteredTransactions.reduce(
+                (acc, transaction) => acc + transaction.data.totalPrice,
+                0
+              );
 
-            const foundTransactions = transactions.filter(transaction => {
-                return transaction.data.ticker === ticker
+              const totalQuantity = filteredTransactions.reduce(
+                (acc, transaction) => acc + transaction.data.quantity,
+                0
+              );
+              const averagePrice =
+                totalPrice / totalQuantity
+        
+              return {
+                ...stocksInformation,
+                averagePrice,
+              };
             })
-
-            let quantity = 0
-            let totalPrice = 0
-
-            foundTransactions.map(transac => {
-                quantity += transac.data.quantity
-                totalPrice += transac.data.totalPrice
-            })
-
-            const avPrice = totalPrice/quantity
-
-            console.log(ticker, avPrice)
-
-            // const tt = stocks.filter(stock => {
-            //     if(stock. === ticker) {
-
-            //     }
-            // })
-        })
+          );
+        
+          setStocks((previousInformation: Array<Stock>) => [
+            ...previousInformation,
+            ...updatedStocks,
+          ]);
     }
 
     React.useEffect(() => {
@@ -65,6 +69,11 @@ const Dashboard: React.FC = () => {
         return data.results[0]
     }
 
+    const BRL = new Intl.NumberFormat('BRL', {
+        style: 'currency',
+        currency: 'BRL'
+    })
+
     return (    
         <div className="stocks">
             {stocks.map((stock: Stock) => {
@@ -75,9 +84,9 @@ const Dashboard: React.FC = () => {
                             <p>{stock.longName}</p>
                         </div>
                         <p>{stock.symbol}</p>
-                        <p>Preço Atual{stock.regularMarketPrice}</p>
-                        <p>Preço Médio</p>
-                        <p>+1,23%</p>
+                        <p>Preço Atual {BRL.format(stock.regularMarketPrice)}</p>
+                        <p>Preço Médio {BRL.format(stock.averagePrice)}</p>
+                        <p>Rentabilidade {((stock.regularMarketPrice/stock.averagePrice - 1) * 100).toFixed(2)}%</p>
                     </div>
                 );
             })}
