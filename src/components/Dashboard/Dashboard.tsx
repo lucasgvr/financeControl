@@ -1,10 +1,10 @@
 import React from 'react';
-import Modal from 'react-modal'
 
 import axios from 'axios';
 import { useTransactions } from 'hooks/useTransactions';
 
 import './Dashboard.scss'
+import StockCardModal from 'components/Modal/StockCard/StockCardModal';
 
 interface StockInformation { 
     requestedAt: string;
@@ -12,12 +12,14 @@ interface StockInformation {
     took: string;
 }
 
-interface Stock {
-    averagePrice: number;
+export interface Stock {
     logourl: string;
     longName: string;
     regularMarketPrice: number;
     symbol: string;
+    averagePrice: number;
+    totalPrice: number,
+    totalQuantity: number
 }
 
 const Dashboard: React.FC = () => {
@@ -26,17 +28,24 @@ const Dashboard: React.FC = () => {
     const [stocks, setStocks] = React.useState<Array<Stock>>([])
 
     const [isOpen, setIsOpen] = React.useState(false)
-    const [selectedStock, setSelectedStock] = React.useState<any>({})
+    const [selectedStock, setSelectedStock] = React.useState<Stock>({
+        logourl: 'https://brapi.dev/favicon.svg',
+        longName: 'Name',
+        regularMarketPrice: 0,
+        symbol: 'NAME4',
+        averagePrice: 0,
+        totalPrice: 0,
+        totalQuantity: 0
+    })
 
 
     const openModal = (stock: Stock) => {
-      console.log(stock)
-      setSelectedStock(stock)
-      setIsOpen(true)
+        setSelectedStock(stock)
+        setIsOpen(true)
     }
 
     const closeModal = () => {
-      setIsOpen(false)
+        setIsOpen(false)
     }
 
     const calculateAveragePrice = async () => {
@@ -89,7 +98,6 @@ const Dashboard: React.FC = () => {
         currency: 'BRL'
     })
 
-    Modal.setAppElement('#root')
 
     return (    
         <div className="stocks">
@@ -108,19 +116,12 @@ const Dashboard: React.FC = () => {
                 )
             })}
 
-            <Modal
+            <StockCardModal 
                 isOpen={isOpen}
                 onRequestClose={closeModal}
-                overlayClassName='react-modal-overlay'
-                className='react-delete-modal-content'
-            >
-                <img src={selectedStock.logourl} alt={selectedStock.longName} style={{width: '2rem', height: '2rem', borderRadius: '50%'}} />
-                <p>{selectedStock.symbol}</p>
-                <p>{selectedStock.longName}</p>
-                <p>{selectedStock.averagePrice}</p>
-                <p>{selectedStock.totalPrice}</p>
-                <p>{selectedStock.totalQuantity}</p>
-            </Modal>
+                selectedStock={selectedStock}
+            />
+
         </div>
     )
 }

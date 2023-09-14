@@ -147,3 +147,43 @@
         }
     }
 }
+
+.react-stock-modal-content {
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    padding: 3rem;
+    width: 100%;
+    max-width: 576px;
+    background: var(--green-palette-5);
+    border-radius: 0.25rem;
+    outline: none;
+
+    .closeButton {
+        position: absolute;
+        right: 1.5rem;
+        top: 1.5rem;
+        border: 0;
+        background: transparent;
+        transition: filter 0.2s;
+        cursor: pointer;
+
+        &:hover {
+            filter: brightness(0.8);
+        }
+    }
+
+    .head {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+
+        img {
+            border-radius: 50%;
+        }
+    }
+}
+
+.react-datepicker-wrapper {
+    display: inline;
+}
