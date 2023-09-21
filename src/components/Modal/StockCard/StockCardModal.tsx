@@ -2,6 +2,8 @@ import { Stock } from 'components/Dashboard/Dashboard'
 import Modal from 'react-modal'
 import closeImg from 'assets/close.svg'
 
+import Chart from 'components/Chart'
+
 import 'styles/modal.scss'
 
 interface StockCardModalProps {
@@ -42,6 +44,8 @@ const StockCardModal: React.FC<StockCardModalProps> = ({isOpen, onRequestClose, 
                 <p>Rentabilidade: {((selectedStock.regularMarketPrice/selectedStock.averagePrice - 1) * 100).toFixed(2)}%</p>
                 <p>Dividendos</p>
             </div>
+            
+            <Chart />
         </Modal>
     )
 }
