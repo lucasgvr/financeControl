@@ -1,0 +1,23 @@
+.stockCardButtons {
+    display: flex;
+    gap: 1rem;
+
+    button {
+        padding: 1rem 2rem 1rem 2rem;
+        font-size: 1.2rem;
+        color: var(--green-palette-5);
+        background-color: var(--green-palette-1);
+        border-radius: 0.5rem;
+        transition: filter 0.2s;
+        border: 1px solid var(--green-palette-1);
+
+        &:last-child {
+            color: var(--green-palette-1);
+            background-color: var(--green-palette-5);
+        }
+
+        &:hover {
+            filter: brightness(0.8);
+        }
+    }
+}

@@ -5,6 +5,7 @@ import closeImg from 'assets/close.svg'
 import Chart from 'components/Chart'
 
 import 'styles/modal.scss'
+import './StockCardModal.scss'
 
 interface StockCardModalProps {
     isOpen: boolean,
@@ -36,13 +37,20 @@ const StockCardModal: React.FC<StockCardModalProps> = ({isOpen, onRequestClose, 
                     <p>{selectedStock.symbol}</p>
                 </div>
             </div>
+
             <div className='body'>
                 <p>Preço Médio: {BRL.format(selectedStock.averagePrice)}</p>
                 <p>Preço Total: {BRL.format(selectedStock.totalPrice)}</p>
                 <p>Quantidade Total: {selectedStock.totalQuantity}</p>
                 <p>Preço Atual: {BRL.format(selectedStock.regularMarketPrice)}</p>
                 <p>Rentabilidade: {((selectedStock.regularMarketPrice/selectedStock.averagePrice - 1) * 100).toFixed(2)}%</p>
-                <p>Dividendos</p>
+                <p>Dividendos 2023</p>
+                <p>Dividendos total</p>
+            </div>
+
+            <div className='stockCardButtons'>
+                <button>Dividendos</button>
+                <button>Observações</button>
             </div>
             
             <Chart />

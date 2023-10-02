@@ -89,7 +89,7 @@ const Dashboard: React.FC = () => {
     }, [transactions])
 
     const getStockInformation = async (ticker: string) => {
-        const { data } = await axios.get<StockInformation>(`https://brapi.dev/api/quote/${ticker}`)
+        const { data } = await axios.get<StockInformation>(`https://brapi.dev/api/quote/${ticker}?token=5nMA8zp5eLXNdzLBWsDZ7R`)
         return data.results[0]
     }
 
@@ -112,6 +112,8 @@ const Dashboard: React.FC = () => {
                         <p>Preço Atual {BRL.format(stock.regularMarketPrice)}</p>
                         <p>Preço Médio {BRL.format(stock.averagePrice)}</p>
                         <p>Rentabilidade {((stock.regularMarketPrice/stock.averagePrice - 1) * 100).toFixed(2)}%</p>
+                        <p>Dividendos 2023</p>
+                        <p>Dividendos total</p>
                     </div>
                 )
             })}
